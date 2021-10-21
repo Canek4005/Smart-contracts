@@ -11,6 +11,14 @@
 			]
 		},
 		{
+			"name": "renderHelloWorld",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"string"}
+			]
+		},
+		{
 			"name": "timestamp",
 			"inputs": [
 			],

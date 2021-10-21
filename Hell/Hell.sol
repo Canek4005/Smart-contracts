@@ -7,7 +7,7 @@ pragma ton-solidity >= 0.35.0;
 pragma AbiHeader expire;
 
 // This is class that describes you smart contract.
-contract HelloWorldContract {
+contract Hell {
     // Contract can have an instance variables.
     // In this example instance variable `timestamp` is used to store the time of `constructor` or `touch`
     // function call
@@ -30,5 +30,10 @@ contract HelloWorldContract {
         timestamp = now;
     }
 
+    function renderHelloWorld () public pure returns (string) {
+        return 'helloWorld';
+    }
+
+    // Updates variable `timestamp` with current blockchain time.
     
 }
