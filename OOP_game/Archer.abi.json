@@ -1,0 +1,76 @@
+{
+	"ABI version": 2,
+	"version": "2.1",
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"bs","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getAttackPower",
+			"inputs": [
+				{"name":"value","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "Attack",
+			"inputs": [
+				{"name":"enemy","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getArmor",
+			"inputs": [
+				{"name":"value","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "GetAttack",
+			"inputs": [
+				{"name":"value","type":"uint256"},
+				{"name":"abuser","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "armor",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"armor","type":"uint256"}
+			]
+		},
+		{
+			"name": "attackPower",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"attackPower","type":"uint256"}
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"health","type":"uint256"},
+		{"name":"armor","type":"uint256"},
+		{"name":"attackPower","type":"uint256"}
+	]
+}

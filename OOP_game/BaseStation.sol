@@ -26,7 +26,7 @@ contract BaseStation is GameObject {
     }
 
     // база получает двойные очки защиты
-    function getArmor(uint value) override internal {
+    function getArmor(uint value) override public {
         armor+=value*2;
     }
     //добавить военного юнита на базу
@@ -35,7 +35,7 @@ contract BaseStation is GameObject {
         countUnit++;
     }
     // переопределение самоуничтожения -> Умирает база и наносит колоссальный урон всем своим юнитам
-    function sendAllAndDestroyMe(address dest) internal override pure checkOwnerAndAccept {
+    function sendAllAndDestroyMe(address dest) internal override checkOwnerAndAccept {
         for(uint i =0;i<countUnit;i++){
             killChildren(IGettingAnAttack(unitStorage[i]), dest);
         }

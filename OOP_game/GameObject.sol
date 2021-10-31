@@ -35,12 +35,12 @@ contract GameObject is IGettingAnAttack {
         return health<=0?false:true;
     }
     // отправка кристаллов киллеру и самоуничтожение
-    function sendAllAndDestroyMe(address dest) internal virtual pure checkOwnerAndAccept {
+    function sendAllAndDestroyMe(address dest) internal virtual checkOwnerAndAccept {
          
         dest.transfer(1, false, 160);
     }
     // получение очков защиты 
-    function getArmor(uint value) virtual internal {
+    function getArmor(uint value) virtual public {
         armor+=value;
     }
     
