@@ -19,7 +19,7 @@ contract GameObject is IGettingAnAttack {
     }
     
     // получить урон
-    function GetAttack(uint value,address abuser) override external checkOwnerAndAccept{
+    function GetAttack(uint value,address abuser) override external {
         health-=armor-value;
         Death(abuser);
     }    
@@ -35,12 +35,12 @@ contract GameObject is IGettingAnAttack {
         return health<=0?false:true;
     }
     // отправка кристаллов киллеру и самоуничтожение
-    function sendAllAndDestroyMe(address dest) internal virtual checkOwnerAndAccept {
+    function sendAllAndDestroyMe(address dest) internal virtual  {
          
         dest.transfer(1, false, 160);
     }
     // получение очков защиты 
-    function getArmor(uint value) virtual public {
+    function GetArmor(uint value) virtual public checkOwnerAndAccept {
         armor+=value;
     }
     

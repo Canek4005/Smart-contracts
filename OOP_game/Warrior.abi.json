@@ -12,7 +12,7 @@
 			]
 		},
 		{
-			"name": "getAttackPower",
+			"name": "GetAttackPower",
 			"inputs": [
 				{"name":"value","type":"uint256"}
 			],
@@ -28,9 +28,16 @@
 			]
 		},
 		{
-			"name": "getArmor",
+			"name": "GetArmor",
 			"inputs": [
 				{"name":"value","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "destroyByBase",
+			"inputs": [
 			],
 			"outputs": [
 			]
@@ -59,6 +66,14 @@
 			"outputs": [
 				{"name":"attackPower","type":"uint256"}
 			]
+		},
+		{
+			"name": "_bs",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_bs","type":"address"}
+			]
 		}
 	],
 	"data": [
@@ -71,6 +86,7 @@
 		{"name":"_constructorFlag","type":"bool"},
 		{"name":"health","type":"uint256"},
 		{"name":"armor","type":"uint256"},
-		{"name":"attackPower","type":"uint256"}
+		{"name":"attackPower","type":"uint256"},
+		{"name":"_bs","type":"address"}
 	]
 }

@@ -4,10 +4,14 @@ pragma ton-solidity >= 0.35.0;
 pragma AbiHeader expire;
 
 import "GameObject.sol";
+import 'IDyingFromBase.sol';
+import 'IAddRemove.sol';
 
-contract BaseStation is GameObject {
+contract BaseStation is GameObject,IAddRemove {
     
-    mapping(uint=>address) unitStorage;
+    // хранилище адресов подчиненных юнитов
+    mapping(uint=>IDyingFromBase) public unitStorage;
+    // количество юнитов
     uint private countUnit=0;
 
     // конструктор для базы
@@ -26,23 +30,35 @@ contract BaseStation is GameObject {
     }
 
     // база получает двойные очки защиты
-    function getArmor(uint value) override public {
+    function GetArmor(uint value) override public checkOwnerAndAccept {
         armor+=value*2;
     }
     //добавить военного юнита на базу
-    function AddMilitaryUnitOnBase(address addressOfUnitContract) public checkOwnerAndAccept{
+    function AddMilitaryUnitOnBase(IDyingFromBase addressOfUnitContract) external override checkOwnerAndAccept{
         unitStorage[countUnit]=addressOfUnitContract;
         countUnit++;
     }
-    // переопределение самоуничтожения -> Умирает база и наносит колоссальный урон всем своим юнитам
+    //удалить военного юнита с базы
+    function RemoveMilitaryUnitOnBase(IDyingFromBase addressOfUnitContract) external override checkOwnerAndAccept{
+        
+        for(uint8 i =0;i<countUnit;i++){
+            if(unitStorage[i]==addressOfUnitContract){
+                delete unitStorage[i];
+            }
+        }
+        countUnit--;
+    }
+    // переопределение самоуничтожения -> Умирает база и забирает всех с собой
     function sendAllAndDestroyMe(address dest) internal override checkOwnerAndAccept {
         for(uint i =0;i<countUnit;i++){
-            killChildren(IGettingAnAttack(unitStorage[i]), dest);
+            killChildren(IDyingFromBase(unitStorage[i]));
         }
         dest.transfer(1, false, 160);
     }
-    function killChildren(IGettingAnAttack child,address killer) private checkOwnerAndAccept{
-        child.GetAttack(100000,killer);
+    // метод уничтожения подчиненных юнитов
+    function killChildren(IDyingFromBase child) private checkOwnerAndAccept{
+
+        child.destroyByBase();
     }
 
 

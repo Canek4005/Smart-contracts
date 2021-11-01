@@ -5,12 +5,13 @@ pragma ton-solidity >= 0.35.0;
 pragma AbiHeader expire;
 
 import 'MilitaryUnit.sol';
-import 'BaseStation.sol';
+
+
 
 contract Archer is MilitaryUnit {
     
     
-    constructor(BaseStation bs) public {
+    constructor(IAddRemove bs) public {
         // Check that contract's public key is set
         require(tvm.pubkey() != 0, 101);
         // Check that message has signature (msg.pubkey() is not zero) and
@@ -22,12 +23,14 @@ contract Archer is MilitaryUnit {
         tvm.accept();
 
         // Вызов у станции функции добавления юнита
-        bs.AddMilitaryUnitOnBase(this);
+        _bs=bs;
+        _bs.AddMilitaryUnitOnBase(IDyingFromBase(this));
 
         
     }
 
-    function getAttackPower(uint value) public checkOwnerAndAccept{
+    // Получение силы атаки
+    function GetAttackPower(uint value) public checkOwnerAndAccept{
         attackPower = value;
     }
 
