@@ -74,9 +74,18 @@
 			"outputs": [
 				{"name":"_bs","type":"address"}
 			]
+		},
+		{
+			"name": "id",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"id","type":"uint256"}
+			]
 		}
 	],
 	"data": [
+		{"key":1,"name":"id","type":"uint256"}
 	],
 	"events": [
 	],
@@ -87,6 +96,7 @@
 		{"name":"health","type":"uint256"},
 		{"name":"armor","type":"uint256"},
 		{"name":"attackPower","type":"uint256"},
-		{"name":"_bs","type":"address"}
+		{"name":"_bs","type":"address"},
+		{"name":"id","type":"uint256"}
 	]
 }

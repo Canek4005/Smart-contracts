@@ -12,8 +12,8 @@ contract BaseStation is GameObject,IAddRemove {
     // хранилище адресов подчиненных юнитов
     mapping(uint=>IDyingFromBase) public unitStorage;
     // количество юнитов
-    uint private countUnit=0;
-
+    uint public countUnit=0;
+    uint static public id;
     // конструктор для базы
     constructor() public {
         // Check that contract's public key is set
@@ -34,13 +34,14 @@ contract BaseStation is GameObject,IAddRemove {
         armor+=value*2;
     }
     //добавить военного юнита на базу
-    function AddMilitaryUnitOnBase(IDyingFromBase addressOfUnitContract) external override checkOwnerAndAccept{
+    function AddMilitaryUnitOnBase(IDyingFromBase addressOfUnitContract) external override {
+        tvm.accept();
         unitStorage[countUnit]=addressOfUnitContract;
         countUnit++;
     }
     //удалить военного юнита с базы
-    function RemoveMilitaryUnitOnBase(IDyingFromBase addressOfUnitContract) external override checkOwnerAndAccept{
-        
+    function RemoveMilitaryUnitOnBase(IDyingFromBase addressOfUnitContract) external override {
+        tvm.accept();
         for(uint8 i =0;i<countUnit;i++){
             if(unitStorage[i]==addressOfUnitContract){
                 delete unitStorage[i];
@@ -49,16 +50,20 @@ contract BaseStation is GameObject,IAddRemove {
         countUnit--;
     }
     // переопределение самоуничтожения -> Умирает база и забирает всех с собой
-    function sendAllAndDestroyMe(address dest) internal override checkOwnerAndAccept {
+    function sendAllAndDestroyMe(address dest) internal override  {
         for(uint i =0;i<countUnit;i++){
             killChildren(IDyingFromBase(unitStorage[i]));
         }
         dest.transfer(1, false, 160);
     }
     // метод уничтожения подчиненных юнитов
-    function killChildren(IDyingFromBase child) private checkOwnerAndAccept{
+    function killChildren(IDyingFromBase child) private {
 
         child.destroyByBase();
+    }
+
+    function GetChildrens() public checkOwnerAndAccept returns(mapping (uint=>IDyingFromBase)) {
+        return unitStorage;
     }
 
 

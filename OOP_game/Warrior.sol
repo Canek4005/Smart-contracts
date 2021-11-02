@@ -9,6 +9,8 @@ import 'MilitaryUnit.sol';
 
 contract Warrior is MilitaryUnit {
     
+uint static public id;
+
     constructor(IAddRemove bs) public {
         // Check that contract's public key is set
         require(tvm.pubkey() != 0, 101);
@@ -18,12 +20,12 @@ contract Warrior is MilitaryUnit {
         // The current smart contract agrees to buy some gas to finish the
         // current transaction. This actions required to process external
         // messages, which bring no value (henceno gas) with themselves.
-        tvm.accept();
 
         _bs=bs;
 
         // Вызов у станции функции добавления юнита
         _bs.AddMilitaryUnitOnBase(IDyingFromBase(this));
+        tvm.accept();
 
         
     }

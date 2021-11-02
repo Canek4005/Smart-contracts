@@ -17,6 +17,14 @@
 			"outputs": [
 				{"name":"timestamp","type":"uint32"}
 			]
+		},
+		{
+			"name": "pubkey",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"pubkey","type":"address"}
+			]
 		}
 	],
 	"data": [
@@ -27,6 +35,7 @@
 		{"name":"_pubkey","type":"uint256"},
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
-		{"name":"timestamp","type":"uint32"}
+		{"name":"timestamp","type":"uint32"},
+		{"name":"pubkey","type":"address"}
 	]
 }

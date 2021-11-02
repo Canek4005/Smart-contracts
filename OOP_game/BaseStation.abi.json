@@ -35,6 +35,14 @@
 			]
 		},
 		{
+			"name": "GetChildrens",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"map(uint256,address)"}
+			]
+		},
+		{
 			"name": "GetAttack",
 			"inputs": [
 				{"name":"value","type":"uint256"},
@@ -58,9 +66,26 @@
 			"outputs": [
 				{"name":"unitStorage","type":"map(uint256,address)"}
 			]
+		},
+		{
+			"name": "countUnit",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"countUnit","type":"uint256"}
+			]
+		},
+		{
+			"name": "id",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"id","type":"uint256"}
+			]
 		}
 	],
 	"data": [
+		{"key":1,"name":"id","type":"uint256"}
 	],
 	"events": [
 	],
@@ -71,6 +96,7 @@
 		{"name":"health","type":"uint256"},
 		{"name":"armor","type":"uint256"},
 		{"name":"unitStorage","type":"map(uint256,address)"},
-		{"name":"countUnit","type":"uint256"}
+		{"name":"countUnit","type":"uint256"},
+		{"name":"id","type":"uint256"}
 	]
 }

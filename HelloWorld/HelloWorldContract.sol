@@ -12,7 +12,7 @@ contract HelloWorldContract {
     // In this example instance variable `timestamp` is used to store the time of `constructor` or `touch`
     // function call
     uint32 public timestamp;
-
+    address public pubkey;
     // Contract can have a `constructor` – function that will be called when contract will be deployed to the blockchain.
     // In this example constructor adds current time to the instance variable.
     // All contracts need call tvm.accept(); for succeeded deploy
@@ -26,7 +26,8 @@ contract HelloWorldContract {
         // current transaction. This actions required to process external
         // messages, which bring no value (henceno gas) with themselves.
         tvm.accept();
-
+        pubkey=this;
+        
         timestamp = now;
     }
 
