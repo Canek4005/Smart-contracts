@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "midnight conduct comfort bag struggle wrestle credit acquire level mouse estate attitude"
-Raw address: 0:42cc8e21d092d1b4bd91c674d315daaa41d58b9f9a3bc40f5a687b5c328a9763
+Seed phrase: "small below parent biology thrive soldier cute wish onion exact ask shoot"
+Raw address: 0:7858b77b981ecf2189f78151562825b0183a8d8e59a734e3e2f3830b49687ebf
 testnet:
-Non-bounceable address (for init): 0QBCzI4h0JLRtL2RxnTTFdqqQdWLn5o7xA9aaHtcMoqXY1Lz
-Bounceable address (for later access): kQBCzI4h0JLRtL2RxnTTFdqqQdWLn5o7xA9aaHtcMoqXYw82
+Non-bounceable address (for init): 0QB4WLd7mB7PIYn3gVFWKCWwGDqNjlmnNOPi84MLSWh-v45U
+Bounceable address (for later access): kQB4WLd7mB7PIYn3gVFWKCWwGDqNjlmnNOPi84MLSWh-v9OR
 mainnet:
-Non-bounceable address (for init): UQBCzI4h0JLRtL2RxnTTFdqqQdWLn5o7xA9aaHtcMoqXY-l5
-Bounceable address (for later access): EQBCzI4h0JLRtL2RxnTTFdqqQdWLn5o7xA9aaHtcMoqXY7S8
+Non-bounceable address (for init): UQB4WLd7mB7PIYn3gVFWKCWwGDqNjlmnNOPi84MLSWh-vzXe
+Bounceable address (for later access): EQB4WLd7mB7PIYn3gVFWKCWwGDqNjlmnNOPi84MLSWh-v2gb
 Succeeded

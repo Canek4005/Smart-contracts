@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "owner rhythm typical dumb busy small core secret fix adjust voice just"
-Raw address: 0:f8291ca56646010822ba953f6ffc42d9bc46ea275c780bf6df1c1f2cec4a46fd
+Seed phrase: "vital hat chapter useless clump mail sustain cause test destroy spin moon"
+Raw address: 0:a87d7249d0ec7f88778bd0c3acf678768d0d51046cc43b59323bcc52cd0099eb
 testnet:
-Non-bounceable address (for init): 0QD4KRylZkYBCCK6lT9v_ELZvEbqJ1x4C_bfHB8s7EpG_ZmZ
-Bounceable address (for later access): kQD4KRylZkYBCCK6lT9v_ELZvEbqJ1x4C_bfHB8s7EpG_cRc
+Non-bounceable address (for init): 0QCofXJJ0Ox_iHeL0MOs9nh2jQ1RBGzEO1kyO8xSzQCZ60w4
+Bounceable address (for later access): kQCofXJJ0Ox_iHeL0MOs9nh2jQ1RBGzEO1kyO8xSzQCZ6xH9
 mainnet:
-Non-bounceable address (for init): UQD4KRylZkYBCCK6lT9v_ELZvEbqJ1x4C_bfHB8s7EpG_SIT
-Bounceable address (for later access): EQD4KRylZkYBCCK6lT9v_ELZvEbqJ1x4C_bfHB8s7EpG_X_W
+Non-bounceable address (for init): UQCofXJJ0Ox_iHeL0MOs9nh2jQ1RBGzEO1kyO8xSzQCZ6_ey
+Bounceable address (for later access): EQCofXJJ0Ox_iHeL0MOs9nh2jQ1RBGzEO1kyO8xSzQCZ66p3
 Succeeded

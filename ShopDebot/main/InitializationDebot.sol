@@ -45,22 +45,7 @@ abstract contract InitializationDebot is Debot,Upgradable  {
         m_OrdersControllerStateInit =tvm.buildStateInit(code,data);
     }
 
-    /// @notice Returns Metadata about DeBot.
-    function getDebotInfo() public functionID(0xDEB) override view returns(
-        string name, string version, string publisher, string key, string author,
-        address support, string hello, string language, string dabi, bytes icon
-    ) {
-        name = "Shop DeBot";
-        version = "0.1.0";
-        publisher = "TON Labs";
-        key = "Shop list manager";
-        author = "Aleksandr";
-        support = address.makeAddrStd(0, 0x66e01d6df5a8d7677d9ab2daf7f258f1e2a7fe73da5320300395f99e01dc3b5f);
-        hello = "Hi, i'm a Shop DeBot.";
-        language = "en";
-        dabi = m_debotAbi.get();
-        icon = m_icon;
-    }
+    
 
     function getRequiredInterfaces() public view override returns (uint256[] interfaces) {
         return [ Terminal.ID, Menu.ID, AddressInput.ID, ConfirmInput.ID ];

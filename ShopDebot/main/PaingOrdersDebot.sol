@@ -1,5 +1,7 @@
 pragma ton-solidity >=0.35.0;
-
+pragma AbiHeader expire;
+pragma AbiHeader time;
+pragma AbiHeader pubkey;
 
 import "InitializationDebot.sol";
 
@@ -12,13 +14,30 @@ contract PaingOrdersDebot is InitializationDebot  {
     
     uint128 m_cost;
 
+
+    /// @notice Returns Metadata about DeBot.
+    function getDebotInfo() public functionID(0xDEB) override view returns(
+        string name, string version, string publisher, string key, string author,
+        address support, string hello, string language, string dabi, bytes icon
+    ) {
+        name = "Shop DeBot Paing";
+        version = "0.1.0";
+        publisher = "gently.whitesnow@outlook.com";
+        key = "Shop list manager";
+        author = "https://t.me/gently_whitesnow";
+        support = address.makeAddrStd(0, 0x66e01d6df5a8d7677d9ab2daf7f258f1e2a7fe73da5320300395f99e01dc3b5f);
+        hello = "Hi, i'm a Shop DeBot Paing.";
+        language = "en";
+        dabi = m_debotAbi.get();
+        icon = m_icon;
+    }
     
     function _menu() internal override {
 
         string sep = '----------------------------------------';
         Menu.select(
             format(
-                "You have {}/{}/{} (amountPaid/amountNotPaid/crystalsSpent) tasks",
+                "You have {}/{}/{} (amountPaid/amountNotPaid/crystalsSpent) orders",
                     m_summaryOrders.amountPaid,
                     m_summaryOrders.amountNotPaid,
                     m_summaryOrders.crystalsSpent
@@ -52,7 +71,7 @@ contract PaingOrdersDebot is InitializationDebot  {
         }();
     }
 
-    function getOrders_(Order[] orders ) public {
+    function getOrders_(Order[] orders) public {
         uint32 i;
         if (orders.length > 0 ) {
             Terminal.print(0, "Your orders list:");
@@ -64,7 +83,7 @@ contract PaingOrdersDebot is InitializationDebot  {
                 } else {
                     completed = ' ';
                 }
-                Terminal.print(0, format("{} {}  \"{}\"{}   at {}", order.id, completed, order.title,order.amount, order.createdAt));
+                Terminal.print(0, format("{} {}  \"{}\" {} amount at {}", order.id, completed, order.title,order.amount, order.createdAt));
             }
         } else {
             Terminal.print(0, "Your orders list is empty");
@@ -86,27 +105,12 @@ contract PaingOrdersDebot is InitializationDebot  {
     function payOrder_(string value) public {
         (uint256 num,) = stoi(value);
         m_orderId = uint32(num);
-        
-        Terminal.input(tvm.functionId(payOrder__), "Enter order cost:", false);
+        Terminal.input(tvm.functionId(payOrder__), "Enter order cost:", false);        
     }
-
-    function payOrder__(string cost) public {
-        (uint256 num,) = stoi(cost);
+    function payOrder__(string value) public {
+        (uint256 num,) = stoi(value);
         m_cost = uint128(num);
         AddressInput.get(tvm.functionId(pay),"Select a wallet for payment. We will ask you to sign two transactions");
-
-        optional(uint256) pubkey = 0;
-        IOrdersController(m_address).payOrder{
-                abiVer: 2,
-                extMsg: true,
-                sign: true,
-                pubkey: pubkey,
-                time: uint64(now),
-                expire: 0,
-                callbackId: tvm.functionId(onSuccess),
-                onErrorId: tvm.functionId(onError)
-            }(m_orderId, m_cost);
-        
     }
 
     function pay(address value) public {
@@ -120,10 +124,26 @@ contract PaingOrdersDebot is InitializationDebot  {
             pubkey: pubkey,
             time: uint64(now),
             expire: 0,
-            callbackId: tvm.functionId(onSuccess),
+            callbackId: tvm.functionId(payOrder___),
             onErrorId: tvm.functionId(onErrorRepeatPay)  // Just repeat if something went wrong
         }(m_address, m_cost, false, 3, empty);
     }
+    
+    function payOrder___() public {     
+        
+        optional(uint256) pubkey = 0;
+        IOrdersController(m_address).payOrder{
+                abiVer: 2,
+                extMsg: true,
+                sign: true,
+                pubkey: pubkey,
+                time: uint64(now),
+                expire: 0,
+                callbackId: tvm.functionId(onSuccess),
+                onErrorId: tvm.functionId(onError)
+            }(m_orderId, m_cost);        
+    }    
+
 
     function onErrorRepeatPay(uint32 sdkError, uint32 exitCode) public {
         // ListOfordersController: check errors if needed.
