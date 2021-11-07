@@ -4,15 +4,15 @@ struct Order{
     uint32 id;
     string title;
     uint32 amount;
-    uint createdDate;
+    uint64 createdAt;
     bool isBought;
-    int generalCost;    
+    uint cost;    
 }
 
 struct SummaryOrders{
     uint32 amountPaid;
     uint32 amountNotPaid;
-    uint mainCost;
+    uint crystalsSpent;
 }
 
 interface ITransactable {
@@ -24,12 +24,12 @@ abstract contract HasConstructorWithPubkey {
    constructor(uint256 pubkey) public {}
 }
 
-interface IListOfOrders {
-   function createTask(string text) external;
-   function updateTask(uint32 id, bool done) external;
-   function deleteTask(uint32 id) external;
-   function getTasks() external returns (Order[] orders);
-   function getStat() external returns (SummaryOrders);
+interface IOrdersController {
+   function getSummaryOrders() external returns (SummaryOrders);
+   function createOrder(string title,uint32 amount) external;
+   function deleteOrder(uint32 id) external;
+   function payOrder(uint32 id, bool pay) external;
+   function getOrders() external returns (Order[] orders);
 }
 
 
