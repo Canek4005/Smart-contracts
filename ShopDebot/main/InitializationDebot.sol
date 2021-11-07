@@ -8,36 +8,62 @@ import "../Moduls/Terminal.sol";
 import "../Moduls/Sdk.sol";
 import "../Moduls/Menu.sol";
 import "../Moduls/AddressInput.sol";
+import "../Moduls/Upgradable.sol";
+import "../Moduls/ConfirmInput.sol";
 
 import "../Entity/Entity.sol";
 
 
 
-abstract contract InitializationDebot is Debot  {
+abstract contract InitializationDebot is Debot,Upgradable  {
     
     
-    // bytes m_icon;
+    bytes m_icon;
 
-    TvmCell m_OrdersControllerCode; // ListOfOrdersController contract code
+    TvmCell m_OrdersControllerCode; // OrdersController contract code
     TvmCell m_OrdersControllerData;
     TvmCell m_OrdersControllerStateInit;
-    address m_address;  // ListOfOrdersController contract address
+    address m_address;  // OrdersController contract address
     SummaryOrders m_summaryOrders;
-    // uint32 m_taskId;    // Task id for update. I didn't find a way to make this var local
+    uint32 m_orderId;    // Task id for update. I didn't find a way to make this var local
     uint256 m_masterPubKey; // User pubkey
     address m_msigAddress;  // User wallet address
 
-    uint32 INITIAL_BALANCE =  200000000;  // Initial ListOfOrdersController contract balance
+    uint32 INITIAL_BALANCE =  200000000;  // Initial OrdersController contract balance
 
+    function start() public override {
+        Terminal.input(tvm.functionId(savePublicKey),"Please enter your public key",false);
+    }
 
     
 
-    function setListOfOrdersControllerCode(TvmCell code,TvmCell data) public {
+    function setOrdersControllerCode(TvmCell code,TvmCell data) public {
         require(msg.pubkey() == tvm.pubkey(), 101);
         tvm.accept();
         m_OrdersControllerCode = code;
         m_OrdersControllerData = data;
         m_OrdersControllerStateInit =tvm.buildStateInit(code,data);
+    }
+
+    /// @notice Returns Metadata about DeBot.
+    function getDebotInfo() public functionID(0xDEB) override view returns(
+        string name, string version, string publisher, string key, string author,
+        address support, string hello, string language, string dabi, bytes icon
+    ) {
+        name = "TODO DeBot";
+        version = "0.2.0";
+        publisher = "TON Labs";
+        key = "TODO list manager";
+        author = "TON Labs";
+        support = address.makeAddrStd(0, 0x66e01d6df5a8d7677d9ab2daf7f258f1e2a7fe73da5320300395f99e01dc3b5f);
+        hello = "Hi, i'm a TODO DeBot.";
+        language = "en";
+        dabi = m_debotAbi.get();
+        
+    }
+
+    function getRequiredInterfaces() public view override returns (uint256[] interfaces) {
+        return [ Terminal.ID, Menu.ID, AddressInput.ID, ConfirmInput.ID ];
     }
 
     function savePublicKey(string value) public {
@@ -78,7 +104,7 @@ abstract contract InitializationDebot is Debot  {
 
     function _getSummaryOrders(uint32 answerId) private view {
         optional(uint256) none;
-        IListOfOrdersController(m_address).getSummaryOrders{
+        IOrdersController(m_address).getSummaryOrders{
             abiVer: 2,
             extMsg: true,
             sign: false,
@@ -112,7 +138,7 @@ abstract contract InitializationDebot is Debot  {
     }
 
     function onErrorRepeatCredit(uint32 sdkError, uint32 exitCode) public {
-        // ListOfordersController: check errors if needed.
+        // OrdersController: check errors if needed.
         sdkError;
         exitCode;
         creditAccount(m_msigAddress);
@@ -152,7 +178,7 @@ abstract contract InitializationDebot is Debot  {
     }
     
     function onErrorRepeatDeploy(uint32 sdkError, uint32 exitCode) public view {
-        // ListOfOrdersController: check errors if needed.
+        // OrdersController: check errors if needed.
         sdkError;
         exitCode;
         deploy();
@@ -167,5 +193,9 @@ abstract contract InitializationDebot is Debot  {
     }
 
     function _menu() internal virtual {}
+
+    function onCodeUpgrade() internal override {
+        tvm.resetStorage();
+    }
         
 }

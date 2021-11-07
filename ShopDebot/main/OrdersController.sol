@@ -43,7 +43,7 @@ contract OrdersController {
         delete m_orders[id];
     }
 
-    function payOrder(uint32 id, uint cost) public onlyOwner {
+    function payOrder(uint32 id, uint128 cost) public onlyOwner {
         optional(Order) order = m_orders.fetch(id);
         require(order.hasValue(), 102);
         tvm.accept();

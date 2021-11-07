@@ -82,7 +82,7 @@ contract FillingOrdersDebot is InitializationDebot  {
             for (i = 0; i < orders.length; i++) {
                 Order order = orders[i];
                 string completed;
-                if (Order.isBought) {
+                if (order.isBought) {
                     completed = '✓';
                 } else {
                     completed = ' ';

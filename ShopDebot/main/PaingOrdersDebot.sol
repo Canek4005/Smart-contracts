@@ -9,8 +9,8 @@ import "InitializationDebot.sol";
 contract PaingOrdersDebot is InitializationDebot  {
 
 
-    uint32 m_orderId;
-    uint m_cost;
+    
+    uint128 m_cost;
 
     
     function _menu() internal override {
@@ -59,7 +59,7 @@ contract PaingOrdersDebot is InitializationDebot  {
             for (i = 0; i < orders.length; i++) {
                 Order order = orders[i];
                 string completed;
-                if (Order.isBought) {
+                if (order.isBought) {
                     completed = '✓';
                 } else {
                     completed = ' ';
@@ -90,13 +90,13 @@ contract PaingOrdersDebot is InitializationDebot  {
         Terminal.input(tvm.functionId(payOrder__), "Enter order cost:", false);
     }
 
-    function payOrder__(uint cost) public view {
-        (uint256 num,) = stoi(value);
-        m_cost = uint(num);
+    function payOrder__(string cost) public view {
+        (uint256 num,) = stoi(cost);
+        m_cost = uint128(num);
         AddressInput.get(tvm.functionId(pay),"Select a wallet for payment. We will ask you to sign two transactions");
 
         optional(uint256) pubkey = 0;
-        IOrdersController(m_address).buyOrder{
+        IOrdersController(m_address).payOrder{
                 abiVer: 2,
                 extMsg: true,
                 sign: true,
@@ -105,7 +105,7 @@ contract PaingOrdersDebot is InitializationDebot  {
                 expire: 0,
                 callbackId: tvm.functionId(onSuccess),
                 onErrorId: tvm.functionId(onError)
-            }(m_taskId, m_cost);
+            }(m_orderId, m_cost);
         
     }
 
@@ -120,9 +120,16 @@ contract PaingOrdersDebot is InitializationDebot  {
             pubkey: pubkey,
             time: uint64(now),
             expire: 0,
-            callbackId: tvm.functionId(waitBeforeDeploy),
-            onErrorId: tvm.functionId(onErrorRepeatCredit)  // Just repeat if something went wrong
+            callbackId: tvm.functionId(onSuccess),
+            onErrorId: tvm.functionId(onErrorRepeatPay)  // Just repeat if something went wrong
         }(m_address, m_cost, false, 3, empty);
+    }
+
+    function onErrorRepeatPay(uint32 sdkError, uint32 exitCode) public {
+        // ListOfordersController: check errors if needed.
+        sdkError;
+        exitCode;
+        pay(m_msigAddress);
     }
 
 

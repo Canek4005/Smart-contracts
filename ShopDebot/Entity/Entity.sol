@@ -28,7 +28,7 @@ interface IOrdersController {
    function getSummaryOrders() external returns (SummaryOrders);
    function createOrder(string title,uint32 amount) external;
    function deleteOrder(uint32 id) external;
-   function payOrder(uint32 id, bool pay) external;
+   function payOrder(uint32 id, uint128 cost) external;
    function getOrders() external returns (Order[] orders);
 }
 
