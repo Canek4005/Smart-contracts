@@ -1,0 +1,60 @@
+{
+	"ABI version": 2,
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"pubkey","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "createOrder",
+			"inputs": [
+				{"name":"title","type":"bytes"},
+				{"name":"amount","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "deleteOrder",
+			"inputs": [
+				{"name":"id","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "payOrder",
+			"inputs": [
+				{"name":"id","type":"uint32"},
+				{"name":"cost","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getOrders",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"id","type":"uint32"},{"name":"title","type":"bytes"},{"name":"amount","type":"uint32"},{"name":"createdAt","type":"uint64"},{"name":"isBought","type":"bool"},{"name":"cost","type":"uint256"}],"name":"orders","type":"tuple[]"}
+			]
+		},
+		{
+			"name": "getSummaryOrders",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"amountPaid","type":"uint32"},{"name":"amountNotPaid","type":"uint32"},{"name":"crystalsSpent","type":"uint256"}],"name":"summaryOrders","type":"tuple"}
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	]
+}

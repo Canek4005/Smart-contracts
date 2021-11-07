@@ -90,7 +90,7 @@ contract PaingOrdersDebot is InitializationDebot  {
         Terminal.input(tvm.functionId(payOrder__), "Enter order cost:", false);
     }
 
-    function payOrder__(string cost) public view {
+    function payOrder__(string cost) public {
         (uint256 num,) = stoi(cost);
         m_cost = uint128(num);
         AddressInput.get(tvm.functionId(pay),"Select a wallet for payment. We will ask you to sign two transactions");

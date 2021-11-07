@@ -1,0 +1,17 @@
+Config: default
+Input arguments:
+     tvc: PaingOrdersDebot.tvc
+      wc: None
+    keys: PaingOrdersDebot.keys.json
+init_data: None
+is_update_tvc: None
+
+Seed phrase: "midnight conduct comfort bag struggle wrestle credit acquire level mouse estate attitude"
+Raw address: 0:42cc8e21d092d1b4bd91c674d315daaa41d58b9f9a3bc40f5a687b5c328a9763
+testnet:
+Non-bounceable address (for init): 0QBCzI4h0JLRtL2RxnTTFdqqQdWLn5o7xA9aaHtcMoqXY1Lz
+Bounceable address (for later access): kQBCzI4h0JLRtL2RxnTTFdqqQdWLn5o7xA9aaHtcMoqXYw82
+mainnet:
+Non-bounceable address (for init): UQBCzI4h0JLRtL2RxnTTFdqqQdWLn5o7xA9aaHtcMoqXY-l5
+Bounceable address (for later access): EQBCzI4h0JLRtL2RxnTTFdqqQdWLn5o7xA9aaHtcMoqXY7S8
+Succeeded

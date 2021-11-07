@@ -1,0 +1,17 @@
+Config: default
+Input arguments:
+     tvc: FillingOrdersDebot.tvc
+      wc: None
+    keys: FillingOrdersDebot.keys.json
+init_data: None
+is_update_tvc: None
+
+Seed phrase: "owner rhythm typical dumb busy small core secret fix adjust voice just"
+Raw address: 0:f8291ca56646010822ba953f6ffc42d9bc46ea275c780bf6df1c1f2cec4a46fd
+testnet:
+Non-bounceable address (for init): 0QD4KRylZkYBCCK6lT9v_ELZvEbqJ1x4C_bfHB8s7EpG_ZmZ
+Bounceable address (for later access): kQD4KRylZkYBCCK6lT9v_ELZvEbqJ1x4C_bfHB8s7EpG_cRc
+mainnet:
+Non-bounceable address (for init): UQD4KRylZkYBCCK6lT9v_ELZvEbqJ1x4C_bfHB8s7EpG_SIT
+Bounceable address (for later access): EQD4KRylZkYBCCK6lT9v_ELZvEbqJ1x4C_bfHB8s7EpG_X_W
+Succeeded

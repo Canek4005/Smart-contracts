@@ -1,0 +1,240 @@
+{
+	"ABI version": 2,
+	"header": ["time"],
+	"functions": [
+		{
+			"name": "getOrders",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getOrders_",
+			"inputs": [
+				{"components":[{"name":"id","type":"uint32"},{"name":"title","type":"bytes"},{"name":"amount","type":"uint32"},{"name":"createdAt","type":"uint64"},{"name":"isBought","type":"bool"},{"name":"cost","type":"uint256"}],"name":"orders","type":"tuple[]"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "payOrder",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "payOrder_",
+			"inputs": [
+				{"name":"value","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "payOrder__",
+			"inputs": [
+				{"name":"cost","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "pay",
+			"inputs": [
+				{"name":"value","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onErrorRepeatPay",
+			"inputs": [
+				{"name":"sdkError","type":"uint32"},
+				{"name":"exitCode","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "deleteOrder",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "deleteOrder_",
+			"inputs": [
+				{"name":"value","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "start",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setOrdersControllerCode",
+			"inputs": [
+				{"name":"code","type":"cell"},
+				{"name":"data","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getDebotInfo",
+			"id": "0xDEB",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"name","type":"bytes"},
+				{"name":"version","type":"bytes"},
+				{"name":"publisher","type":"bytes"},
+				{"name":"key","type":"bytes"},
+				{"name":"author","type":"bytes"},
+				{"name":"support","type":"address"},
+				{"name":"hello","type":"bytes"},
+				{"name":"language","type":"bytes"},
+				{"name":"dabi","type":"bytes"},
+				{"name":"icon","type":"bytes"}
+			]
+		},
+		{
+			"name": "getRequiredInterfaces",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"interfaces","type":"uint256[]"}
+			]
+		},
+		{
+			"name": "savePublicKey",
+			"inputs": [
+				{"name":"value","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "checkSummaryOrders",
+			"inputs": [
+				{"name":"acc_type","type":"int8"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setSummaryOrders",
+			"inputs": [
+				{"components":[{"name":"amountPaid","type":"uint32"},{"name":"amountNotPaid","type":"uint32"},{"name":"crystalsSpent","type":"uint256"}],"name":"summaryOrders","type":"tuple"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "creditAccount",
+			"inputs": [
+				{"name":"value","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onErrorRepeatCredit",
+			"inputs": [
+				{"name":"sdkError","type":"uint32"},
+				{"name":"exitCode","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "waitBeforeDeploy",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "checkIfSummaryOrdersIs0",
+			"inputs": [
+				{"name":"acc_type","type":"int8"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onErrorRepeatDeploy",
+			"inputs": [
+				{"name":"sdkError","type":"uint32"},
+				{"name":"exitCode","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onError",
+			"inputs": [
+				{"name":"sdkError","type":"uint32"},
+				{"name":"exitCode","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onSuccess",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "upgrade",
+			"inputs": [
+				{"name":"state","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getDebotOptions",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"options","type":"uint8"},
+				{"name":"debotAbi","type":"bytes"},
+				{"name":"targetAbi","type":"bytes"},
+				{"name":"targetAddr","type":"address"}
+			]
+		},
+		{
+			"name": "setABI",
+			"inputs": [
+				{"name":"dabi","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	]
+}
