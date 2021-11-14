@@ -25,6 +25,10 @@ abstract contract HasConstructorWithPubkey {
    constructor(uint256 pubkey) public {}
 }
 
+abstract contract HasConstructorWithPubkeyAndImageRoom {
+   constructor(uint256 pubkey,TvmCell imageRoom) public {}
+}
+
 interface IAccount {
    function getSummaryAccount() external returns (SummaryAccount);//получить саммари по количеству комнат
    function getRooms() external returns (Room[] rooms); // Получить список комнат

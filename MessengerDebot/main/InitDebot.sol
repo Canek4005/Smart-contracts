@@ -29,9 +29,7 @@ abstract contract InitDebot is Debot,Upgradable  {
     TvmCell m_RoomStateInit;
     //
     address m_AccountAddress;  // Account contract address
-    //
-    mapping(uint=>address) public m_RoomsAddress; // Rooms contracts address
-    //
+    
     SummaryAccount m_summaryAccount; 
 
     
@@ -175,7 +173,7 @@ abstract contract InitDebot is Debot,Upgradable  {
                 sign: true,
                 pubkey: none,
                 stateInit: image,
-                call: {HasConstructorWithPubkey, m_masterPubKey}
+                call: {HasConstructorWithPubkeyAndImageRoom, m_masterPubKey,m_RoomStateInit}
             });
             tvm.sendrawmsg(deployMsg, 1);
     }
