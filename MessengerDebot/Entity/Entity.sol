@@ -1,18 +1,19 @@
 pragma ton-solidity >=0.35.0;
 
-struct Order{
+struct Room{
     uint32 id;
     string title;
-    uint32 amount;
-    uint64 createdAt;
-    bool isBought;
-    uint cost;    
+    uint32 nameIn;
+    address addressRoom;   
 }
 
-struct SummaryOrders{
-    uint32 amountPaid;
-    uint32 amountNotPaid;
-    uint crystalsSpent;
+struct SummaryAccount{
+    
+    uint rooms;
+}
+
+struct SummaryChating{
+   string[] message;
 }
 
 interface ITransactable {
@@ -24,12 +25,21 @@ abstract contract HasConstructorWithPubkey {
    constructor(uint256 pubkey) public {}
 }
 
-interface IOrdersController {
-   function getSummaryOrders() external returns (SummaryOrders);
-   function createOrder(string title,uint32 amount) external;
-   function deleteOrder(uint32 id) external;
-   function payOrder(uint32 id, uint128 cost) external;
-   function getOrders() external returns (Order[] orders);
+interface IAccount {
+   function getSummaryAccount() external returns (SummaryAccount);//получить саммари по количеству комнат
+   function getRooms() external returns (Room[] rooms); // Получить список комнат
+   function openRoom(address addressRoom) external;// открыть комнату
+   function connectToRoom(address addressRoom) external; //подключится к существующей комнате
+   function createRoom(string title,string nameIn) external;//создать комнату
+   function deleteRoom(uint32 id) external;//Удалить комнату
+}
+
+interface IRoom {
+   function getSummaryChating() external returns (SummaryChating);
+   function sendMessage(string title) external;
+   function cleanHistory() external;
+   function closeRoom() external ;
+   
 }
 
 

@@ -32,7 +32,7 @@ abstract contract InitDebot is Debot,Upgradable  {
     //
     mapping(uint=>address) public m_RoomsAddress; // Rooms contracts address
     //
-    SummaryRooms m_summaryRooms; 
+    SummaryAccount m_summaryAccount; 
 
     
     uint32 m_accountId;    // Task id for update. I didn't find a way to make this var local
@@ -101,13 +101,13 @@ abstract contract InitDebot is Debot,Upgradable  {
             deploy();
 
         } else if (acc_type == 2) {  // acc is frozen
-            Terminal.print(0, format("Can not continue: account {} is frozen", m_address));
+            Terminal.print(0, format("Can not continue: account {} is frozen", m_AccountAddress));
         }
     }
 
     function _getSummaryAccount(uint32 answerId) private view {
         optional(uint256) none;
-        IAccountController(m_address).getSummaryAccount{
+        IAccount(m_AccountAddress).getSummaryAccount{
             abiVer: 2,
             extMsg: true,
             sign: false,
@@ -137,7 +137,7 @@ abstract contract InitDebot is Debot,Upgradable  {
             expire: 0,
             callbackId: tvm.functionId(waitBeforeDeploy),
             onErrorId: tvm.functionId(onErrorRepeatCredit)  // Just repeat if something went wrong
-        }(m_address, INITIAL_BALANCE, false, 3, empty);
+        }(m_AccountAddress, INITIAL_BALANCE, false, 3, empty);
     }
 
     function onErrorRepeatCredit(uint32 sdkError, uint32 exitCode) public {
@@ -149,7 +149,7 @@ abstract contract InitDebot is Debot,Upgradable  {
 
 
     function waitBeforeDeploy() public  {
-        Sdk.getAccountType(tvm.functionId(checkIfSummaryAccountIs0), m_address);
+        Sdk.getAccountType(tvm.functionId(checkIfSummaryAccountIs0), m_AccountAddress);
     }
 
     function checkIfSummaryAccountIs0(int8 acc_type) public {
@@ -167,7 +167,7 @@ abstract contract InitDebot is Debot,Upgradable  {
             optional(uint256) none;
             TvmCell deployMsg = tvm.buildExtMsg({
                 abiVer: 2,
-                dest: m_address,
+                dest: m_AccountAddress,
                 callbackId: tvm.functionId(onSuccess),
                 onErrorId:  tvm.functionId(onErrorRepeatDeploy),    // Just repeat if something went wrong
                 time: 0,
@@ -200,5 +200,6 @@ abstract contract InitDebot is Debot,Upgradable  {
     function onCodeUpgrade() internal override {
         tvm.resetStorage();
     }
+    
         
 }
