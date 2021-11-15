@@ -30,15 +30,16 @@ abstract contract HasConstructorWithPubkeyAndImageRoom {
 }
 
 interface IAccount {
-   function getSummaryAccount() external returns (SummaryAccount);//получить саммари по количеству комнат
-   function getRooms() external returns (Room[] rooms); // Получить список комнат
-   function openRoom(uint32 id) external returns(address addressRoom);// открыть комнату
-   function connectToRoom(address addressRoom) external; //подключится к существующей комнате
+   function getSummaryAccount() external view returns (SummaryAccount);//получить саммари по количеству комнат
+   function getRooms() external view returns (Room[] rooms); // Получить список комнат
+   function openRoom(uint id) external returns(address addressRoom);// открыть комнату
    function createRoom(string title,string nameIn) external;//создать комнату
+   function connectToRoom(address addressRoom) external returns(bool value); //подключится к существующей комнате
    function deleteRoom(uint32 id) external;//Удалить комнату
 }
 
 interface IRoom {
+   function healthCheck() external ;
    function getSummaryChating() external returns (SummaryChating);
    function sendMessage(string title) external;
    function cleanHistory() external;

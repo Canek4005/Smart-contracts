@@ -98,12 +98,12 @@ contract MessengerDebot is InitDebot  {
     
 
     function openRoom_(string value) public {
-        (uint256 num,) = stoi(value);
-        m_openedRoomAddress = m_RoomsAddress[num];
-        openRoom__(m_openedRoomAddress);
+        (uint num,) = stoi(value);
+        
+        openRoom__(num);
     }
 
-    function openRoom__(address value) public view {
+    function openRoom__(uint value) public view {
                
         optional(uint256) pubkey = 0;
         IAccount(m_AccountAddress).openRoom{
@@ -117,7 +117,7 @@ contract MessengerDebot is InitDebot  {
                 onErrorId: tvm.functionId(onError)
             }(value);
     }
-    function onSuccessOpen(address room ) public view{
+    function onSuccessOpen(address room) public view{
         m_openedRoomAddress = room;
         _getSummaryChating(tvm.functionId(setSummaryChating));
         
@@ -126,7 +126,26 @@ contract MessengerDebot is InitDebot  {
     function connectToRoom(uint32 index) public{
         index = index;
         
-        AddressInput.get(tvm.functionId(openRoom__), "Enter room address:");
+        AddressInput.get(tvm.functionId(connectToRoom_), "Enter room address:");
+        
+    }
+    function connectToRoom_(address value) public{
+        m_openedRoomAddress = value;       
+        optional(uint256) pubkey = 0;
+        IAccount(m_AccountAddress).connectToRoom{
+                abiVer: 2,
+                extMsg: true,
+                sign: true,
+                pubkey: pubkey,
+                time: uint64(now),
+                expire: 0,
+                callbackId: tvm.functionId(onSuccessConnect),
+                onErrorId: tvm.functionId(onError)
+            }(value);
+    }
+    function onSuccessConnect(address room) public view{
+        m_openedRoomAddress = room;
+        _getSummaryChating(tvm.functionId(setSummaryChating));
         
     }
 

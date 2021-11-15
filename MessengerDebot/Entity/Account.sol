@@ -3,6 +3,9 @@ pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
 import "../Entity/Entity.sol";
+import "../Moduls/Terminal.sol";
+import "../Moduls/Sdk.sol";
+import "../Moduls/AddressInput.sol";
 
 contract Account is IAccount {
     /*
@@ -38,11 +41,11 @@ contract Account is IAccount {
         m_RoomStateInit = imageRoom;
     }
 
-    function getSummaryAccount() public view returns (SummaryAccount summaryAccount) {
+    function getSummaryAccount() external override view returns (SummaryAccount summaryAccount) {
         summaryAccount = SummaryAccount(m_count);
     }
 
-    function getRooms() public view returns (Room[] rooms) {
+    function getRooms() external override view returns (Room[] rooms) {
         
         string title;
         string nameIn;
@@ -56,14 +59,14 @@ contract Account is IAccount {
        }
     }
 
-    function openRoom(uint id) public onlyOwner returns(address addressRoom) {
+    function openRoom(uint id) external override onlyOwner returns(address addressRoom) {
         tvm.accept();
         
         addressRoom =  m_rooms[id].addressRoom; 
         
         }
 
-    function createRoom(string title,string nameIn) public onlyOwner {
+    function createRoom(string title,string nameIn) external override onlyOwner {
         tvm.accept();
         m_title=title;
         m_nameIn=nameIn;
@@ -71,14 +74,14 @@ contract Account is IAccount {
         
 
     }
-    function deployRoom() private onlyOwner{
+    function deployRoom() private {
         TvmCell deployState = tvm.insertPubkey(m_RoomStateInit, m_ownerPubkey);
         m_RoomAddress = address.makeAddrStd(m_count, tvm.hash(deployState));
         Terminal.print(0, format( "Info: your Room contract address is {}", m_RoomAddress));
 
         Sdk.getAccountType(tvm.functionId(checkSummaryRoom), m_RoomAddress);
     }
-    function checkSummaryRoom(int8 acc_type) public {
+    function checkSummaryRoom(int8 acc_type) private{
         if (acc_type == 1) { // acc is active and contract is already deployed
             m_rooms[m_count] = Room(m_count, m_title, m_nameIn,m_RoomAddress);
             m_count++;
@@ -97,7 +100,7 @@ contract Account is IAccount {
             Terminal.print(0, "Can not continue: room is frozen");
         }
     }
-    function creditAccount(address value) public {
+    function creditRoom(address value) public {
         m_msigAddress = value;
         optional(uint256) pubkey = 0;
         TvmCell empty;
@@ -110,14 +113,14 @@ contract Account is IAccount {
             expire: 0,
             callbackId: tvm.functionId(waitBeforeDeploy),
             onErrorId: tvm.functionId(onErrorRepeatCredit)  // Just repeat if something went wrong
-        }(m_AccountAddress, INITIAL_BALANCE, false, 3, empty);
+        }(m_RoomAddress, 1000000000, false, 3, empty);
     }
 
     function onErrorRepeatCredit(uint32 sdkError, uint32 exitCode) public {
         // Account: check errors if needed.
         sdkError;
         exitCode;
-        creditAccount(m_msigAddress);
+        creditRoom(m_msigAddress);
     }
 
 
@@ -158,32 +161,38 @@ contract Account is IAccount {
         exitCode;
         deploy();
     }
-    function onError(uint32 sdkError, uint32 exitCode) public {
-        Terminal.print(0, format("Operation failed. sdkError {}, exitCode {}", sdkError, exitCode));
-        _menu();
-    }
+    
 
     function onSuccess() public view {
         Sdk.getAccountType(tvm.functionId(checkSummaryRoom), m_RoomAddress);
         
     }
 
+    function connectToRoom(address value) external override returns(address ad){
 
-    function deleteOrder(uint32 id) public onlyOwner {
-        require(m_orders.exists(id), 102);
-        tvm.accept();
-        delete m_orders[id];
+        optional(uint256) pubkey = 0;
+        IRoom(value).healthCheck{
+                abiVer: 2,
+                extMsg: true,
+                sign: false,
+                pubkey: pubkey,
+                time: uint64(now),
+                expire: 0,
+                callbackId: ad = value,
+                onErrorId: value=false
+            }(value);
+        
     }
 
-    function payOrder(uint32 id, uint128 cost) public onlyOwner {
-        optional(Order) order = m_orders.fetch(id);
-        require(order.hasValue(), 102);
+
+    function deleteRoom(uint32 id) external override onlyOwner {
+        require(m_rooms.exists(id), 102);
         tvm.accept();
-        Order thisOrder = order.get();
-        thisOrder.isBought = true;
-        _crystalsSpent += cost;
-        m_orders[id] = thisOrder;
+        delete m_rooms[id];
+        m_count-=1;
     }
+
+    
 
     
 }
