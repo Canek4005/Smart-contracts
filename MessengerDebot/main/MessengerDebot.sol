@@ -13,6 +13,8 @@ contract MessengerDebot is InitDebot  {
 
     string _title;
 
+    address m_openedRoomAddress;
+
     /// @notice Returns Metadata about DeBot.
     function getDebotInfo() public functionID(0xDEB) override view returns(
         string name, string version, string publisher, string key, string author,
@@ -93,7 +95,7 @@ contract MessengerDebot is InitDebot  {
             _menu();
         }
     }
-    address m_openedRoomAddress;
+    
 
     function openRoom_(string value) public {
         (uint256 num,) = stoi(value);
@@ -115,7 +117,8 @@ contract MessengerDebot is InitDebot  {
                 onErrorId: tvm.functionId(onError)
             }(value);
     }
-    function onSuccessOpen() public view{
+    function onSuccessOpen(address room ) public view{
+        m_openedRoomAddress = room;
         _getSummaryChating(tvm.functionId(setSummaryChating));
         
     }

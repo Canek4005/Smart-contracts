@@ -32,7 +32,7 @@ abstract contract HasConstructorWithPubkeyAndImageRoom {
 interface IAccount {
    function getSummaryAccount() external returns (SummaryAccount);//получить саммари по количеству комнат
    function getRooms() external returns (Room[] rooms); // Получить список комнат
-   function openRoom(address addressRoom) external;// открыть комнату
+   function openRoom(uint32 id) external returns(address addressRoom);// открыть комнату
    function connectToRoom(address addressRoom) external; //подключится к существующей комнате
    function createRoom(string title,string nameIn) external;//создать комнату
    function deleteRoom(uint32 id) external;//Удалить комнату

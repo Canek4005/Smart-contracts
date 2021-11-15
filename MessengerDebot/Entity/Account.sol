@@ -29,6 +29,7 @@ contract Account is IAccount {
     string m_title;
     string m_nameIn;
     address m_RoomAddress;
+    address m_msigAddress;
 
     constructor(uint256 pubkey,TvmCell imageRoom) public {
         require(pubkey != 0, 120);
@@ -41,7 +42,7 @@ contract Account is IAccount {
         summaryAccount = SummaryAccount(m_count);
     }
 
-    function getOrders() public view returns (Room[] rooms) {
+    function getRooms() public view returns (Room[] rooms) {
         
         string title;
         string nameIn;
@@ -55,11 +56,12 @@ contract Account is IAccount {
        }
     }
 
-    function openRoom(address ) public onlyOwner {
+    function openRoom(uint id) public onlyOwner returns(address addressRoom) {
         tvm.accept();
-        m_count++;
-        m_orders[m_count] = Order(m_count, title, amount, now, false,0);
-    }
+        
+        addressRoom =  m_rooms[id].addressRoom; 
+        
+        }
 
     function createRoom(string title,string nameIn) public onlyOwner {
         tvm.accept();
@@ -70,7 +72,7 @@ contract Account is IAccount {
 
     }
     function deployRoom() private onlyOwner{
-        TvmCell deployState = tvm.insertPubkey(m_RoomStateInit, m_masterPubKey);
+        TvmCell deployState = tvm.insertPubkey(m_RoomStateInit, m_ownerPubkey);
         m_RoomAddress = address.makeAddrStd(m_count, tvm.hash(deployState));
         Terminal.print(0, format( "Info: your Room contract address is {}", m_RoomAddress));
 
@@ -120,10 +122,10 @@ contract Account is IAccount {
 
 
     function waitBeforeDeploy() public  {
-        Sdk.getAccountType(tvm.functionId(checkIfSummaryAccountIs0), m_AccountAddress);
+        Sdk.getAccountType(tvm.functionId(checkIfSummaryRoomIs0), m_RoomAddress);
     }
 
-    function checkIfSummaryAccountIs0(int8 acc_type) public {
+    function checkIfSummaryRoomIs0(int8 acc_type) public {
         if (acc_type ==  0) {
             deploy();
         } else {
@@ -134,11 +136,11 @@ contract Account is IAccount {
 
     function deploy() private view {
             
-            TvmCell image = tvm.insertPubkey(m_AccountStateInit, m_masterPubKey);
+            TvmCell image = tvm.insertPubkey(m_RoomStateInit, m_ownerPubkey);
             optional(uint256) none;
             TvmCell deployMsg = tvm.buildExtMsg({
                 abiVer: 2,
-                dest: m_AccountAddress,
+                dest: m_RoomAddress,
                 callbackId: tvm.functionId(onSuccess),
                 onErrorId:  tvm.functionId(onErrorRepeatDeploy),    // Just repeat if something went wrong
                 time: 0,
@@ -146,11 +148,25 @@ contract Account is IAccount {
                 sign: true,
                 pubkey: none,
                 stateInit: image,
-                call: {HasConstructorWithPubkeyAndImageRoom, m_masterPubKey,m_RoomStateInit}
+                call: {HasConstructorWithPubkey, m_ownerPubkey}
             });
             tvm.sendrawmsg(deployMsg, 1);
     }
-    
+    function onErrorRepeatDeploy(uint32 sdkError, uint32 exitCode) public view {
+        // Account: check errors if needed.
+        sdkError;
+        exitCode;
+        deploy();
+    }
+    function onError(uint32 sdkError, uint32 exitCode) public {
+        Terminal.print(0, format("Operation failed. sdkError {}, exitCode {}", sdkError, exitCode));
+        _menu();
+    }
+
+    function onSuccess() public view {
+        Sdk.getAccountType(tvm.functionId(checkSummaryRoom), m_RoomAddress);
+        
+    }
 
 
     function deleteOrder(uint32 id) public onlyOwner {
