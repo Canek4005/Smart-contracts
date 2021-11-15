@@ -5,15 +5,11 @@ pragma AbiHeader pubkey;
 
 import "InitDebot.sol";
 
-
+import "../Entity/RoomContract.sol";
 
 
 contract MessengerDebot is InitDebot  {
     
-
-    string _title;
-
-    address m_openedRoomAddress;
 
     /// @notice Returns Metadata about DeBot.
     function getDebotInfo() public functionID(0xDEB) override view returns(
@@ -30,14 +26,21 @@ contract MessengerDebot is InitDebot  {
         language = "en";
         dabi = m_debotAbi.get();
         icon = m_icon;
-    }    
+    }
 
+    string _title;
 
+    string _alias;
+
+    address m_openedRoomAddress;
+
+    address m_RoomAddress;
     function _menu() internal override {
         
         string sep = '----------------------------------------';
         Menu.select(
             format(
+                
                 "You have {} room(-s)",
                     m_summaryAccount.rooms 
             ),
@@ -97,13 +100,13 @@ contract MessengerDebot is InitDebot  {
     }
     
 
-    function openRoom_(string value) public {
+    function openRoom_(string value) view public {
         (uint num,) = stoi(value);
         
-        openRoom__(num);
+        openRoom__(uint32(num));
     }
 
-    function openRoom__(uint value) public view {
+    function openRoom__(uint32 value) public view {
                
         optional(uint256) pubkey = 0;
         IAccount(m_AccountAddress).openRoom{
@@ -117,7 +120,7 @@ contract MessengerDebot is InitDebot  {
                 onErrorId: tvm.functionId(onError)
             }(value);
     }
-    function onSuccessOpen(address room) public view{
+    function onSuccessOpen(address room) public{
         m_openedRoomAddress = room;
         _getSummaryChating(tvm.functionId(setSummaryChating));
         
@@ -129,10 +132,10 @@ contract MessengerDebot is InitDebot  {
         AddressInput.get(tvm.functionId(connectToRoom_), "Enter room address:");
         
     }
-    function connectToRoom_(address value) public{
-        m_openedRoomAddress = value;       
+    function connectToRoom_(address value) public view{
+            
         optional(uint256) pubkey = 0;
-        IAccount(m_AccountAddress).connectToRoom{
+        IRoom(m_AccountAddress).healthCheck{
                 abiVer: 2,
                 extMsg: true,
                 sign: true,
@@ -143,11 +146,13 @@ contract MessengerDebot is InitDebot  {
                 onErrorId: tvm.functionId(onError)
             }(value);
     }
-    function onSuccessConnect(address room) public view{
-        m_openedRoomAddress = room;
-        _getSummaryChating(tvm.functionId(setSummaryChating));
-        
+    
+    
+    function onSuccessConnect(address room) public {
+        m_openedRoomAddress=room;
+        _getSummaryChating(tvm.functionId(setSummaryChating));        
     }
+    
 
     function createRoom(uint32 index) public {
         index = index;
@@ -159,10 +164,14 @@ contract MessengerDebot is InitDebot  {
     function saveTitle_(string value) public {
         _title=value;
         Terminal.print(0, format( "How will you be called in the room of {}?", value));
-        Terminal.input(tvm.functionId(createRoom_), "Enter your alias:", false);
+        Terminal.input(tvm.functionId(saveAlias_), "Enter your alias:", false);
+    }
+    function saveAlias_(string value) public {
+        _alias=value;
+        CreateRoom_();
     }
 
-    function createRoom_(string value) public view {
+    function createRoom__(Room value) public view {
         
         optional(uint256) pubkey = 0;
         IAccount(m_AccountAddress).createRoom{
@@ -174,7 +183,107 @@ contract MessengerDebot is InitDebot  {
                 expire: 0,
                 callbackId: tvm.functionId(onSuccess),
                 onErrorId: tvm.functionId(onError)
-            }(_title,value);
+            }(value);
+    }
+    
+    function CreateRoom_() private {
+        
+        TvmCell deployState = tvm.insertPubkey(m_RoomStateInit, m_masterPubKey);
+
+        // tvm.accept();
+        // TvmCell stateInit = tvm.buildStateInit(m_RoomCode, m_RoomData);
+		// m_RoomAddress = new RoomContract{stateInit: stateInit, value: 100000000}(m_masterPubKey);
+        m_RoomAddress = address.makeAddrStd(0, tvm.hash(deployState));
+        
+        Terminal.print(0, format( "Info: your Room contract address is {}", m_RoomAddress));
+
+        Sdk.getAccountType(tvm.functionId(checkSummaryRoom), m_RoomAddress);
+    }
+    function checkSummaryRoom(int8 acc_type) public{
+        if (acc_type == 1) { // acc is active and contract is already deployed
+            createRoom__(Room(m_summaryAccount.rooms, _title, _alias,m_RoomAddress));
+            
+
+        } else if (acc_type == -1)  { // acc is inactive
+            Terminal.print(0, "New room with an initial balance of 0.2 tokens will be deployed");
+            AddressInput.get(tvm.functionId(creditRoom),"Select a wallet for payment. We will ask you to sign two transactions");
+
+        } else  if (acc_type == 0) { // acc is uninitialized
+            Terminal.print(0, format(
+                "Deploying new contract. If an error occurs, check if your Room contract has enough tokens on its balance"
+            ));
+            deployRoom();
+
+        } else if (acc_type == 2) {  // acc is frozen
+            Terminal.print(0, "Can not continue: room is frozen");
+        }
+    }
+    function creditRoom(address value) public {
+        m_msigAddress = value;
+        optional(uint256) pubkey = 0;
+        TvmCell empty;
+        ITransactable(m_msigAddress).sendTransaction{
+            abiVer: 2,
+            extMsg: true,
+            sign: true,
+            pubkey: pubkey,
+            time: uint64(now),
+            expire: 0,
+            callbackId: tvm.functionId(waitBeforeDeployRoom),
+            onErrorId: tvm.functionId(onErrorRepeatCreditRoom)  // Just repeat if something went wrong
+        }(m_RoomAddress, 1000000000, false, 3, empty);
+    }
+
+    function onErrorRepeatCreditRoom(uint32 sdkError, uint32 exitCode) public {
+        // Account: check errors if needed.
+        sdkError;
+        exitCode;
+        creditRoom(m_msigAddress);
+    }
+
+
+    function waitBeforeDeployRoom() public  {
+        Sdk.getAccountType(tvm.functionId(checkIfSummaryRoomIs0), m_RoomAddress);
+    }
+
+    function checkIfSummaryRoomIs0(int8 acc_type) public {
+        if (acc_type ==  0) {
+            deployRoom();
+        } else {
+            waitBeforeDeployRoom();
+        }
+    }
+
+
+    function deployRoom() private view {
+            
+            TvmCell image = tvm.insertPubkey(m_RoomStateInit, m_masterPubKey);
+            optional(uint256) none;
+            TvmCell deployMsg = tvm.buildExtMsg({
+                abiVer: 2,
+                dest: m_RoomAddress,
+                callbackId: tvm.functionId(onSuccessDeployRoom),
+                onErrorId:  tvm.functionId(onErrorRepeatDeployRoom),    // Just repeat if something went wrong
+                time: 0,
+                expire: 0,
+                sign: true,
+                pubkey: none,
+                stateInit: image,
+                call: {HasConstructorWithPubkey, m_masterPubKey}
+            });
+            tvm.sendrawmsg(deployMsg, 1);
+    }
+    function onErrorRepeatDeployRoom(uint32 sdkError, uint32 exitCode) public view {
+        // Account: check errors if needed.
+        sdkError;
+        exitCode;
+        deployRoom();
+    }
+    
+
+    function onSuccessDeployRoom() public{
+        Sdk.getAccountType(tvm.functionId(checkSummaryRoom), m_RoomAddress);
+        
     }
 
     
@@ -204,6 +313,13 @@ contract MessengerDebot is InitDebot  {
             }(uint32(num));
     }
 
+    
+
+        
+
+
+    
+
     // Working inside room
 
     SummaryChating m_summaryChating;
@@ -230,17 +346,14 @@ contract MessengerDebot is InitDebot  {
     function __menu() private {
         
         string sep = '----------------------------------------';
-        string letter = "";
+        
 
-        for (uint i; i < m_summaryChating.message.length ;i++){
-            string mess = m_summaryChating.message[i];
-            letter = letter + mess +"\n";
-        }
+        
 
         Menu.select(
             format(
                 "You history: \n {}",
-                    letter 
+                    m_summaryChating.message 
             ),
             sep,
             [
@@ -271,19 +384,26 @@ contract MessengerDebot is InitDebot  {
                 pubkey: pubkey,
                 time: uint64(now),
                 expire: 0,
-                callbackId: tvm.functionId(onSuccessOpen),
+                callbackId: tvm.functionId(onSuccessSend),
                 onErrorId: tvm.functionId(onErrorSend)
             }(value);
     }
+
+    function onSuccessSend() public {
+        
+        _getSummaryChating(tvm.functionId(setSummaryChating));
+        
+    }
+
     function onErrorSend(uint32 sdkError, uint32 exitCode) public {
-        Terminal.print(0, format("Operation failed. sdkError {}, exitCode {}", sdkError, exitCode));
+        Terminal.print(0, format("Send message failed. sdkError {}, exitCode {}", sdkError, exitCode));
         _getSummaryChating(tvm.functionId(setSummaryChating));
         
     }
     
     function cleanHistory(uint32 index) public {
         index = index;
-        if (m_summaryChating.message.length>0) {
+        if (m_summaryChating.message=="") {
             ConfirmInput.get(tvm.functionId(cleanHistory__),"do you really want to erase history?");
             
         } else {
@@ -312,7 +432,7 @@ contract MessengerDebot is InitDebot  {
                 pubkey: pubkey,
                 time: uint64(now),
                 expire: 0,
-                callbackId: tvm.functionId(onSuccessOpen),
+                callbackId: tvm.functionId(onSuccessSend),
                 onErrorId: tvm.functionId(onErrorSend)
             }();
     }
@@ -324,5 +444,5 @@ contract MessengerDebot is InitDebot  {
         
     }
 
-    
+
 }

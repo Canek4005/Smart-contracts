@@ -1,0 +1,17 @@
+Config: default
+Input arguments:
+     tvc: MessengerDebot.tvc
+      wc: None
+    keys: MessengerDebot.keys.json
+init_data: None
+is_update_tvc: None
+
+Seed phrase: "infant okay timber copper feed absorb exclude evidence system flower cargo scorpion"
+Raw address: 0:16e3475fe39727849e0d78567a32fc5f16ff98deb129a96eeae6a075ea4258d6
+testnet:
+Non-bounceable address (for init): 0QAW40df45cnhJ4NeFZ6MvxfFv-Y3rEpqW7q5qB16kJY1tlb
+Bounceable address (for later access): kQAW40df45cnhJ4NeFZ6MvxfFv-Y3rEpqW7q5qB16kJY1oSe
+mainnet:
+Non-bounceable address (for init): UQAW40df45cnhJ4NeFZ6MvxfFv-Y3rEpqW7q5qB16kJY1mLR
+Bounceable address (for later access): EQAW40df45cnhJ4NeFZ6MvxfFv-Y3rEpqW7q5qB16kJY1j8U
+Succeeded

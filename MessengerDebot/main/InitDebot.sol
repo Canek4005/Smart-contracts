@@ -173,7 +173,7 @@ abstract contract InitDebot is Debot,Upgradable  {
                 sign: true,
                 pubkey: none,
                 stateInit: image,
-                call: {HasConstructorWithPubkeyAndImageRoom, m_masterPubKey,m_RoomStateInit}
+                call: {HasConstructorWithPubkey, m_masterPubKey}
             });
             tvm.sendrawmsg(deployMsg, 1);
     }
