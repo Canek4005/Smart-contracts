@@ -1,0 +1,59 @@
+{
+	"ABI version": 2,
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"pubkey","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getSummaryAccount",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"rooms","type":"uint32"}],"name":"summaryAccount","type":"tuple"}
+			]
+		},
+		{
+			"name": "getRooms",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"id","type":"uint32"},{"name":"title","type":"bytes"},{"name":"nameIn","type":"bytes"},{"name":"addressRoom","type":"address"}],"name":"rooms","type":"tuple[]"}
+			]
+		},
+		{
+			"name": "openRoom",
+			"inputs": [
+				{"name":"id","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"addressRoom","type":"address"}
+			]
+		},
+		{
+			"name": "createRoom",
+			"inputs": [
+				{"components":[{"name":"id","type":"uint32"},{"name":"title","type":"bytes"},{"name":"nameIn","type":"bytes"},{"name":"addressRoom","type":"address"}],"name":"value","type":"tuple"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "deleteRoom",
+			"inputs": [
+				{"name":"id","type":"uint32"}
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	]
+}

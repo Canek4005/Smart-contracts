@@ -1,0 +1,50 @@
+{
+	"ABI version": 2,
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"pubkey","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "healthCheck",
+			"inputs": [
+				{"name":"addressRoom","type":"address"}
+			],
+			"outputs": [
+				{"name":"addressRoomOut","type":"address"}
+			]
+		},
+		{
+			"name": "getSummaryChating",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"message","type":"bytes"}],"name":"summary","type":"tuple"}
+			]
+		},
+		{
+			"name": "sendMessage",
+			"inputs": [
+				{"name":"title","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "cleanHistory",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	]
+}
