@@ -14,7 +14,7 @@ contract RoomContract is IRoom {
     
 
     string message="";
-    
+    uint256 static _id;
 
     uint256 m_ownerPubkey;
 

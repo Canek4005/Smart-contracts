@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "infant okay timber copper feed absorb exclude evidence system flower cargo scorpion"
-Raw address: 0:16e3475fe39727849e0d78567a32fc5f16ff98deb129a96eeae6a075ea4258d6
+Seed phrase: "book proof during disease daughter believe sponsor stage mother sleep carpet tobacco"
+Raw address: 0:1a0e37259e6ce5763410fdcc5fc8415c149b013f43c2b3996c6c69d07ad215d7
 testnet:
-Non-bounceable address (for init): 0QAW40df45cnhJ4NeFZ6MvxfFv-Y3rEpqW7q5qB16kJY1tlb
-Bounceable address (for later access): kQAW40df45cnhJ4NeFZ6MvxfFv-Y3rEpqW7q5qB16kJY1oSe
+Non-bounceable address (for init): 0QAaDjclnmzldjQQ_cxfyEFcFJsBP0PCs5lsbGnQetIV13YA
+Bounceable address (for later access): kQAaDjclnmzldjQQ_cxfyEFcFJsBP0PCs5lsbGnQetIV1yvF
 mainnet:
-Non-bounceable address (for init): UQAW40df45cnhJ4NeFZ6MvxfFv-Y3rEpqW7q5qB16kJY1mLR
-Bounceable address (for later access): EQAW40df45cnhJ4NeFZ6MvxfFv-Y3rEpqW7q5qB16kJY1j8U
+Non-bounceable address (for init): UQAaDjclnmzldjQQ_cxfyEFcFJsBP0PCs5lsbGnQetIV182K
+Bounceable address (for later access): EQAaDjclnmzldjQQ_cxfyEFcFJsBP0PCs5lsbGnQetIV15BP
 Succeeded

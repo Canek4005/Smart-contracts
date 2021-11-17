@@ -185,11 +185,16 @@ contract MessengerDebot is InitDebot  {
                 onErrorId: tvm.functionId(onError)
             }(value);
     }
-    
+    uint id = 0;
     function CreateRoom_() private {
         
+        TvmBuilder salt;
+        salt.store(this);
+        TvmCell codeRoom = tvm.setCodeSalt(m_RoomCode, salt.toCell());
+        TvmCell dataRoom =tvm.buildStateInit({contr: RoomContract,varInit: {_id: id},code: m_RoomCode});
+        id+=1;
+        m_RoomStateInit =tvm.buildStateInit(codeRoom,dataRoom);
         TvmCell deployState = tvm.insertPubkey(m_RoomStateInit, m_masterPubKey);
-
         // tvm.accept();
         // TvmCell stateInit = tvm.buildStateInit(m_RoomCode, m_RoomData);
 		// m_RoomAddress = new RoomContract{stateInit: stateInit, value: 100000000}(m_masterPubKey);
@@ -257,7 +262,7 @@ contract MessengerDebot is InitDebot  {
 
     function deployRoom() private view {
             
-            TvmCell image = tvm.insertPubkey(m_RoomStateInit, m_masterPubKey);
+            TvmCell image = m_RoomStateInit;
             optional(uint256) none;
             TvmCell deployMsg = tvm.buildExtMsg({
                 abiVer: 2,

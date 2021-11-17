@@ -44,6 +44,7 @@
 		}
 	],
 	"data": [
+		{"key":1,"name":"_id","type":"uint256"}
 	],
 	"events": [
 	]
