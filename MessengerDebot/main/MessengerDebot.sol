@@ -185,20 +185,20 @@ contract MessengerDebot is InitDebot  {
                 onErrorId: tvm.functionId(onError)
             }(value);
     }
-    uint id = 0;
+    uint id = 10;
     function CreateRoom_() private {
         
         TvmBuilder salt;
         salt.store(this);
         TvmCell codeRoom = tvm.setCodeSalt(m_RoomCode, salt.toCell());
-        TvmCell dataRoom =tvm.buildStateInit({contr: RoomContract,varInit: {_id: id},code: m_RoomCode});
+        m_RoomStateInit =tvm.buildStateInit({contr: RoomContract,varInit: {_id: id},code: m_RoomCode});
         id+=1;
-        m_RoomStateInit =tvm.buildStateInit(codeRoom,dataRoom);
-        TvmCell deployState = tvm.insertPubkey(m_RoomStateInit, m_masterPubKey);
+        
+        
         // tvm.accept();
         // TvmCell stateInit = tvm.buildStateInit(m_RoomCode, m_RoomData);
 		// m_RoomAddress = new RoomContract{stateInit: stateInit, value: 100000000}(m_masterPubKey);
-        m_RoomAddress = address.makeAddrStd(0, tvm.hash(deployState));
+        m_RoomAddress = address.makeAddrStd(0, tvm.hash(m_RoomStateInit));
         
         Terminal.print(0, format( "Info: your Room contract address is {}", m_RoomAddress));
 
@@ -210,7 +210,7 @@ contract MessengerDebot is InitDebot  {
             
 
         } else if (acc_type == -1)  { // acc is inactive
-            Terminal.print(0, "New room with an initial balance of 0.2 tokens will be deployed");
+            Terminal.print(0, "New room with an initial balance of 1 tokens will be deployed");
             AddressInput.get(tvm.functionId(creditRoom),"Select a wallet for payment. We will ask you to sign two transactions");
 
         } else  if (acc_type == 0) { // acc is uninitialized

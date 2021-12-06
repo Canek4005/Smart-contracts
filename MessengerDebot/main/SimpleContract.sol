@@ -11,7 +11,7 @@ contract SimpleContract {
 		// check that contract's public key is set
 		require(tvm.pubkey() != 0, 101);
 
-		// NOTE: To protect from deploying this contract by hacker it's good idea to check msg.sender. See 17_SimpleWallet.sol
+		
 		tvm.accept();
 		m_a = a;
 		

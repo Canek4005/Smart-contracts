@@ -89,7 +89,7 @@ abstract contract InitDebot is Debot,Upgradable  {
             _getSummaryAccount(tvm.functionId(setSummaryAccount));
 
         } else if (acc_type == -1)  { // acc is inactive
-            Terminal.print(0, "You don't have a Account list yet, so a new contract with an initial balance of 0.2 tokens will be deployed");
+            Terminal.print(0, "You don't have a Account yet, so a new contract with an initial balance of 0.2 tokens will be deployed");
             AddressInput.get(tvm.functionId(creditAccount),"Select a wallet for payment. We will ask you to sign two transactions");
 
         } else  if (acc_type == 0) { // acc is uninitialized

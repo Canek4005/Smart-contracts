@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "book proof during disease daughter believe sponsor stage mother sleep carpet tobacco"
-Raw address: 0:1a0e37259e6ce5763410fdcc5fc8415c149b013f43c2b3996c6c69d07ad215d7
+Seed phrase: "actual price jump shed thunder bounce rug sleep venue version thunder define"
+Raw address: 0:bb19399a45df44366541eee2e6ca6415f284c2762397c4982c354fdb70e17514
 testnet:
-Non-bounceable address (for init): 0QAaDjclnmzldjQQ_cxfyEFcFJsBP0PCs5lsbGnQetIV13YA
-Bounceable address (for later access): kQAaDjclnmzldjQQ_cxfyEFcFJsBP0PCs5lsbGnQetIV1yvF
+Non-bounceable address (for init): 0QC7GTmaRd9ENmVB7uLmymQV8oTCdiOXxJgsNU_bcOF1FHyx
+Bounceable address (for later access): kQC7GTmaRd9ENmVB7uLmymQV8oTCdiOXxJgsNU_bcOF1FCF0
 mainnet:
-Non-bounceable address (for init): UQAaDjclnmzldjQQ_cxfyEFcFJsBP0PCs5lsbGnQetIV182K
-Bounceable address (for later access): EQAaDjclnmzldjQQ_cxfyEFcFJsBP0PCs5lsbGnQetIV15BP
+Non-bounceable address (for init): UQC7GTmaRd9ENmVB7uLmymQV8oTCdiOXxJgsNU_bcOF1FMc7
+Bounceable address (for later access): EQC7GTmaRd9ENmVB7uLmymQV8oTCdiOXxJgsNU_bcOF1FJr-
 Succeeded
